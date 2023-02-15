@@ -4,6 +4,7 @@
   import { onMount } from 'svelte';
   import { authStore } from '../stores/auth_store';
   import { auth } from '$lib/client/fb';
+  import { goto } from '$app/navigation';
 
   let line_process: HTMLElement | null = null
   $: watchRoute($navigating)
@@ -30,8 +31,15 @@
     }
   }
 
+  authStore.subscribe(async ({ isLoggedIn, firebaseControlled }) => {
+    if (!isLoggedIn && firebaseControlled) {
+      await goto("/auth/login");
+    }
+  });
+
   onMount(() => {
     auth.onAuthStateChanged((user) => {
+      console.log('auth state changed', user?.uid)
       authStore.set({
         isLoggedIn: user !== null,
         user,
@@ -41,18 +49,25 @@
   })
 </script>
 
-<div id="app">
-  <div class="line">
-    <div bind:this={line_process} class="line-process"></div>
+{#if !$authStore.firebaseControlled}
+  <div class="w-full h-screen bg-primary grid place-items-center">
+    <p class="font-semibold text-white/90">Loadding...</p>
   </div>
-  <slot />
-</div>
+{:else}
+  <div id="app">
+    <div class="line">
+      <div bind:this={line_process} class="line-process"></div>
+    </div>
+    <slot />
+  </div>
+{/if}
 
 <style lang="postcss">
   @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   #app {
     font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 95%;
+    color: var(--second-2)
   }
   .line {
     @apply fixed w-full h-0.5 top-0 left-0 z-50;
