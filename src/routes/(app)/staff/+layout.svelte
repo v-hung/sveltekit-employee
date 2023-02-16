@@ -12,4 +12,8 @@
       <a href="{$page.url.pathname}/locations" class="font-medium hover:text-primary {path == "locations" ? 'text-primary' : ''}">Locations</a>
     </div>
   </div>
+
+  <div class="flex-grow min-w-0 py-8 px-8">
+    <slot/>
+  </div>
 </div>
