@@ -6,16 +6,16 @@ import type { PageData } from "./$types";
 
   let tab: "personal" | "archive" = "personal"
 
-  let staffs = data.staffs
+  let teams = data.teams
 
   let checked_data: any[] = []
-  $: check_all = checked_data.length == staffs.length
+  $: check_all = checked_data.length == teams.length
   const toggleAll = () => {
     if (check_all) {
       checked_data = []
     }
     else {
-      checked_data = staffs.map((v,i) => i)
+      checked_data = teams.map((v,i) => i)
     }
   }
 
@@ -33,7 +33,7 @@ import type { PageData } from "./$types";
 <div class="w-full h-full flex flex-col">
   <div class="flex items-center space-x-4">
     <h3 class="text-xl text-second font-semibold">
-      Employee
+      Team
       <span class="inline-block ml-1 text-sm text-under px-2 py-0.5 border rounded-full align-middle">{data.staffs.length}</span>
     </h3>
   
@@ -73,33 +73,19 @@ import type { PageData } from "./$types";
       <thead>
         <tr>
           <th><input type="checkbox" name="" on:click={toggleAll} checked={check_all}></th>
-          <th>Full Name / Phone</th>
-          <th>Role</th>
-          <th>Position / Rate</th>
-          <th>Team</th>
-          <th>Location</th>
+          <th>Name</th>
+          <th>Description</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        {#each staffs as v,i}
+        {#each teams as v,i}
           <tr class="font-medium">
             <td><input type="checkbox" name="product" bind:group={checked_data} value="{i}"></td>
-            <td>
-              <div class="flex space-x-2 items-center">
-                <div class="flex-none">
-                  <img src="{v.image}" alt="" class="w-12 h-12 rounded-full object-cover">
-                </div>
-                <div>
-                  <h5 class="text-primary font-medium">{v.firstName} {v.lastName}</h5>
-                  <p class="text-under">{v.phone}</p>
-                </div>
-              </div>
-            </td>
-            <td class="text-second">{v.role}</td>
-            <td class="text-second">{findPosition(v.position)?.title || "None"}</td>
-            <td class="text-second">{findTeam(v.teamId)?.title || "None"}</td>
-            <td class="text-second">{findLocation(v.location)?.title || "None"}</td>
+           
+            <td class="text-second">{v.title}</td>
+            <td class="text-second">{v.description}</td>
+            
             <td class="">
               <div class="flex items-center space-x-3">
                 <span class="icon hover:text-primary">

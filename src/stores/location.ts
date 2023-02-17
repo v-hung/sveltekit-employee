@@ -11,9 +11,18 @@ type LocationType =  {
   title: string,
 }
 
-export const locationStore = writable<LocationType[]>([]);
+type LocationTypeStore = {
+  locations: LocationType[],
+  load: boolean
+}
+
+export const locationStore = writable<LocationTypeStore>({locations: [], load: false});
 
 export const fetchLocationInfo = async (businessId: string) : Promise<LocationType[]> => {
+  if (get(locationStore).load) {
+    return get(locationStore).locations
+  }
+
   const q = collection(db, `business/${businessId}/locations`);
 
   const querySnapshot = await getDocs(q);
@@ -26,7 +35,7 @@ export const fetchLocationInfo = async (businessId: string) : Promise<LocationTy
     })
   });
 
-  locationStore.update(n => data)
+  locationStore.update(n => ({locations: data, load: true}))
 
   return data
 }

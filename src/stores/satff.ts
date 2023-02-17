@@ -18,9 +18,17 @@ export type StaffType =  {
   location: string
 }
 
-export const staffStore = writable<StaffType[]>([]);
+type StaffTypeStore = {
+  staffs: StaffType[],
+  load: boolean
+}
+
+export const staffStore = writable<StaffTypeStore>({staffs: [], load: false});
 
 export const fetchStaffInfo = async (businessId: string) : Promise<StaffType[]> => {
+  if (get(staffStore).load) {
+    return get(staffStore).staffs
+  }
   const q = collection(db, `business/${businessId}/staffs`);
 
   const querySnapshot = await getDocs(q);
@@ -32,6 +40,8 @@ export const fetchStaffInfo = async (businessId: string) : Promise<StaffType[]> 
       id: doc.id
     })
   });
+
+  staffStore.update(n => ({staffs: data, load: true}))
 
   return data
 }

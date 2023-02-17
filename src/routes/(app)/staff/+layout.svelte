@@ -6,10 +6,10 @@
 <div class="w-full h-full flex items-stretch">
   <div class="flex-none w-72 bg-[var(--bg)] py-8 px-8">
     <div class="flex flex-col space-y-8">
-      <a href="{$page.url.pathname}" class="font-medium hover:text-primary {path == "" ? 'text-primary' : ''}">Employees</a>
-      <a href="{$page.url.pathname}/positions" class="font-medium hover:text-primary {path == "positions" ? 'text-primary' : ''}">Positions</a>
-      <a href="{$page.url.pathname}/teams" class="font-medium hover:text-primary {path == "teams" ? 'text-primary' : ''}">Teams</a>
-      <a href="{$page.url.pathname}/locations" class="font-medium hover:text-primary {path == "locations" ? 'text-primary' : ''}">Locations</a>
+      <a href="/staff" class="font-medium hover:text-primary {path == "" ? 'text-primary' : ''}">Employees</a>
+      <a href="/staff/positions" class="font-medium hover:text-primary {path == "positions" ? 'text-primary' : ''}">Positions</a>
+      <a href="/staff/teams" class="font-medium hover:text-primary {path == "teams" ? 'text-primary' : ''}">Teams</a>
+      <a href="/staff/locations" class="font-medium hover:text-primary {path == "locations" ? 'text-primary' : ''}">Locations</a>
     </div>
   </div>
 

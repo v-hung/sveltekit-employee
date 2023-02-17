@@ -10,8 +10,9 @@
   const loginWithEmailAndPassword = async () => {
     try {
       signInWithEmailAndPassword(auth, email, password)
-
-      await goto("/");
+      .then(result => {
+        goto("/")
+      })
 
     } catch (e) {
       console.log('login with google error', e);
@@ -33,6 +34,7 @@
           // ...
 
           console.log({credential, token, user})
+          goto("/")
         }).catch((error) => {
           // Handle Errors here.
           const errorCode = error.code
@@ -44,8 +46,6 @@
           
           console.log({errorCode, errorMessage, email, credential})
         })
-
-      await goto("/");
 
     } catch (e) {
       console.log('login with google error', e);

@@ -8,13 +8,21 @@ import type { StaffType } from "./satff";
 
 type TeamType =  {
   id: string,
-  name: string,
+  title: string,
   description: string
 }
 
-export const teamStore = writable<TeamType[]>([]);
+type TeamTypeStore = {
+  teams: TeamType[],
+  load: boolean
+}
+
+export const teamStore = writable<TeamTypeStore>({teams:[], load: false});
 
 export const fetchTeamInfo = async (businessId: string) : Promise<TeamType[]> => {
+  if (get(teamStore).load) {
+    return get(teamStore).teams
+  }
   const q = collection(db, `business/${businessId}/teams`);
 
   const querySnapshot = await getDocs(q);
@@ -27,7 +35,7 @@ export const fetchTeamInfo = async (businessId: string) : Promise<TeamType[]> =>
     })
   });
 
-  teamStore.update(n => (data))
+  teamStore.update(n => ({teams: data, load: true}))
 
   return data
 }

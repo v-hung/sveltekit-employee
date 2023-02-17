@@ -33,7 +33,7 @@ import type { PageData } from "./$types";
 <div class="w-full h-full flex flex-col">
   <div class="flex items-center space-x-4">
     <h3 class="text-xl text-second font-semibold">
-      Employee
+      Position
       <span class="inline-block ml-1 text-sm text-under px-2 py-0.5 border rounded-full align-middle">{data.staffs.length}</span>
     </h3>
   

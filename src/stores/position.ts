@@ -4,16 +4,24 @@ import type { User } from "firebase/auth";
 import { authStore } from "./auth_store";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "$lib/client/fb";
-import type { StaffType } from "./satff";
 
 type PositionType =  {
   id: string,
   title: string,
 }
 
-export const positionStore = writable<PositionType[]>([]);
+type PositionTypeStore = {
+  positions: PositionType[],
+  load: boolean
+}
+
+export const positionStore = writable<PositionTypeStore>({positions: [], load: false});
 
 export const fetchPositionInfo = async (businessId: string) : Promise<PositionType[]> => {
+  if (get(positionStore).load) {
+    return get(positionStore).positions
+  }
+
   const q = collection(db, `business/${businessId}/positions`);
 
   const querySnapshot = await getDocs(q);
@@ -26,7 +34,7 @@ export const fetchPositionInfo = async (businessId: string) : Promise<PositionTy
     })
   });
 
-  positionStore.update(n => data)
+  positionStore.update(n => ({positions: data, load: true}))
 
   return data
 }

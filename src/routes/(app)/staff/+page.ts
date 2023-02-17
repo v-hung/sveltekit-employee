@@ -7,14 +7,12 @@ import type { PageLoad } from './$types';
 export const load = (async ({ parent }) => {
   const { business } = await parent()
 
-  const [teams, staffs, position, location] = await Promise.all([
+  const [teams, staffs, positions, locations] = await Promise.all([
     fetchTeamInfo(business?.id || ""),
     fetchStaffInfo(business?.id || ""),
     fetchPositionInfo(business?.id || ""),
     fetchLocationInfo(business?.id || "")
   ])
 
-  return {
-    teams, staffs
-  };
+  return {teams, staffs, positions, locations}
 }) satisfies PageLoad;
