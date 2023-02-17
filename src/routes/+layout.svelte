@@ -5,6 +5,9 @@
   import { authStore } from '../stores/auth_store';
   import { auth } from '$lib/client/fb';
   import { goto } from '$app/navigation';
+  import { fetchUserInfo } from '../stores/auth_store';
+
+  export let data
 
   let line_process: HTMLElement | null = null
   $: watchRoute($navigating)
@@ -37,16 +40,17 @@
     }
   });
 
-  onMount(() => {
-    auth.onAuthStateChanged((user) => {
-      console.log('auth state changed', user?.uid)
-      authStore.set({
-        isLoggedIn: user !== null,
-        user,
-        firebaseControlled: true,
-      });
-    });
-  })
+  // onMount(() => {
+  //   auth.onAuthStateChanged(async (user) => {
+  //     console.log('auth state changed', user?.uid)
+  //     const userInfo = await fetchUserInfo(user)
+  //     authStore.set({
+  //       isLoggedIn: user !== null,
+  //       user: userInfo,
+  //       firebaseControlled: true,
+  //     });
+  //   });
+  // })
 </script>
 
 {#if !$authStore.firebaseControlled}

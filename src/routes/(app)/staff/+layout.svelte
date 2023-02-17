@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="flex-grow min-w-0 py-8 px-8">
+  <div class="flex-grow min-w-0 py-6 px-8">
     <slot/>
   </div>
 </div>

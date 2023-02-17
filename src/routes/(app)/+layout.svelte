@@ -1,17 +1,7 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import Header from "$lib/components/header.svelte";
-  import { onMount } from "svelte";
-  import { authStore } from "../../stores/auth_store";
-  import { fetchBusiness } from "../../stores/business";
-  import { fetchUserInfo } from "../../stores/user";
 
-  onMount( () => {
-    Promise.all([
-      fetchBusiness(),
-      fetchUserInfo()
-    ])
-  })
+  export let data
 </script>
 
 <div class="flex flex-col min-h-screen">

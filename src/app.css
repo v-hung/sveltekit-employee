@@ -31,37 +31,29 @@
 	}                                                                                  
 
   table {
-    @apply w-full;
+    @apply w-full border-collapse;
   }
 
   table td,
   table th {
-    @apply py-5 px-4 font-normal;
+    @apply py-4 px-5 text-left;
   }
+  table th { @apply bg-[var(--bg)] font-medium px-5 py-4; }
+  /* table td { @apply hover:bg-[var(--bg)]; } */
+  tbody tr:nth-child(even) td { @apply bg-[var(--bg)]; }
 
-  table > thead > tr {
-    @apply uppercase text-sm text-left border-b border-gray-300 text-[#333];
-  }
+  td:first-child, th:first-child { @apply rounded-l-lg text-left; }
+  td:last-child, th:last-child { @apply rounded-r-lg text-right; }
 
-  table > tbody > tr > td:first-child,
-  table > tbody > tr > td:last-child {
+  table tbody tr { @apply border-b; }
+
+  table > tbody > tr > td:first-child, table > tbody > tr > td:last-child {
     white-space: nowrap;
     width: 1px;
   }
 
-  table tr > td:first-child {
-    @apply pl-0
-  }
-  table tr > td:last-child {
-    @apply pl-12;
-  }
-
-  table > tbody > tr {
-    @apply bg-white border-b border-gray-200;
-  }
-
   table > tbody > tr > td > *{
-    @apply line-clamp-1;
+    @apply line-clamp-2;
   }
 
   input[type=checkbox] {
@@ -76,7 +68,7 @@
     cursor: pointer;
   }
   input[type=checkbox]:checked {
-    @apply bg-orange-600 border-orange-600;
+    @apply bg-[var(--primary)] border-[var(--primary)];
   }
   input[type=checkbox]:checked::after{
     content: "";
@@ -100,11 +92,11 @@
   }
 
   .btn-outline {
-    @apply block px-4 py-1.5 rounded-full border bg-white hover:bg-gray-200 font-semibold text-[var(--primary)];
+    @apply block px-4 py-1.5 rounded-full border bg-white hover:bg-gray-200 font-medium text-[var(--primary)];
   }
 
   .btn {
-    @apply block px-6 py-2.5 rounded-full bg-[var(--primary)] hover:bg-opacity-90 font-semibold text-white/90;
+    @apply block px-6 py-2.5 rounded-full bg-[var(--primary)] hover:bg-opacity-90 font-medium text-white/90;
   }
 
   .text-primary {
