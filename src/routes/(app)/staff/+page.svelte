@@ -1,12 +1,16 @@
 <script lang="ts">
   import FilterSelect from "$lib/components/filter_select.svelte";
-import type { PageData } from "./$types";
+  import Select from "$lib/components/form/select.svelte";
+  import Text from "$lib/components/form/text.svelte";
+  import AddEmployee from "$lib/components/modal/add_employee.svelte";
+  import { staffStore } from "../../../stores/satff";
+  import type { PageData } from "./$types";
 
   export let data: PageData
 
   let tab: "personal" | "archive" = "personal"
 
-  let staffs = data.staffs
+  $: staffs = $staffStore.staffs
 
   let checked_data: any[] = []
   $: check_all = checked_data.length == staffs.length
@@ -19,15 +23,24 @@ import type { PageData } from "./$types";
     }
   }
 
-  const findTeam = (teamId: string) => data.teams.find(v => v.id == teamId) || null
-  const findPosition = (teamId: string) => data.positions.find(v => v.id == teamId) || null
-  const findLocation = (teamId: string) => data.locations.find(v => v.id == teamId) || null
+  const findTeam = (id: string) => data.teams.find(v => v.id == id) || null
+  const findPosition = (id: string) => data.positions.find(v => v.id == id) || null
+  const findLocation = (id: string) => data.locations.find(v => {
+    let team = data.teams.find(v2 => v2.id == id) || null
 
-  let rolos = [{title: "Admin"}, {title: "Employee"}]
+    if (team) return v.id == team.location
+    else return false
+  }) || null
+  const findRole = (id: string) => roles.find(v => v.id == id) || null
+
+  let roles = [{id: "admin", title: "Admin"}, {id: "employee", title: "Employee"}]
   let roleFiler = "All"
   let positionFiler = "All"
   let locationFiler = "All"
   let teamFiler = "All"
+
+  let openAddEmployee = false
+  let updateStaffId = ""
 </script>
 
 <div class="w-full h-full flex flex-col">
@@ -44,7 +57,7 @@ import type { PageData } from "./$types";
       </span>
     </div>
   
-    <button class="btn">Add team</button>
+    <button class="btn" on:click|preventDefault={() => {updateStaffId = ""; openAddEmployee = true}}>Add employee</button>
   </div>
   
   <div class="mt-6 border-b flex space-x-4">
@@ -59,7 +72,7 @@ import type { PageData } from "./$types";
   </div>
   
   <div class="flex space-x-6 py-6">
-    <FilterSelect title="Role" data={rolos} bind:choose={roleFiler}/>
+    <FilterSelect title="Role" data={roles} bind:choose={roleFiler}/>
 
     <FilterSelect title="Position" data={data.positions} bind:choose={positionFiler}/>
 
@@ -88,7 +101,13 @@ import type { PageData } from "./$types";
             <td>
               <div class="flex space-x-2 items-center">
                 <div class="flex-none">
-                  <img src="{v.image}" alt="" class="w-12 h-12 rounded-full object-cover">
+                  {#if v.image}
+                    <img src="{v.image}" alt="" class="w-12 h-12 rounded-full object-cover">
+                  {:else}
+                    <div class="w-12 h-12 rounded-full bg-primary text-white grid place-items-center">
+                      {`${v.firstName[0] || ""} ${v.lastName[0] || ""}`}
+                    </div>
+                  {/if}
                 </div>
                 <div>
                   <h5 class="text-primary font-medium">{v.firstName} {v.lastName}</h5>
@@ -96,15 +115,17 @@ import type { PageData } from "./$types";
                 </div>
               </div>
             </td>
-            <td class="text-second">{v.role}</td>
+            <td class="text-second">{findRole(v.role)?.title || "None"}</td>
             <td class="text-second">{findPosition(v.position)?.title || "None"}</td>
-            <td class="text-second">{findTeam(v.teamId)?.title || "None"}</td>
-            <td class="text-second">{findLocation(v.location)?.title || "None"}</td>
+            <td class="text-second">{findTeam(v.team)?.title || "None"}</td>
+            <td class="text-second">{findLocation(v.team)?.title || "None"}</td>
             <td class="">
               <div class="flex items-center space-x-3">
-                <span class="icon hover:text-primary">
+                <button class="icon hover:text-primary"
+                  on:click|preventDefault={() => {updateStaffId = v.id; openAddEmployee = true}}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.413.585L4 13.585V18h4.413L19.045 7.401zm-3-3 1.587 1.585-1.59 1.584-1.586-1.585 1.589-1.584zM6 16v-1.585l7.04-7.018 1.586 1.586L7.587 16H6zm-2 4h16v2H4z"></path></svg>
-                </span>
+                </button>
                 <span class="icon text-[var(--orange-2)] hover:text-[var(--orange)] cursor-pointer">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z"></path></svg>
                 </span>
@@ -135,6 +156,10 @@ import type { PageData } from "./$types";
   {:else if tab == "archive"}
   {/if}
 </div>
+
+{#if openAddEmployee}
+  <AddEmployee bind:open={openAddEmployee} roles={roles} bind:staffId={updateStaffId} />
+{/if}
 
 <style lang="postcss">
   .tab.active {

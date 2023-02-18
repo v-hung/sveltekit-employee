@@ -1,12 +1,13 @@
 <script lang="ts">
   import FilterSelect from "$lib/components/filter_select.svelte";
-import type { PageData } from "./$types";
+  import { teamStore } from "../../../../stores/team";
+  import type { PageData } from "./$types";
 
   export let data: PageData
 
   let tab: "personal" | "archive" = "personal"
 
-  let teams = data.teams
+  let teams = $teamStore.teams
 
   let checked_data: any[] = []
   $: check_all = checked_data.length == teams.length

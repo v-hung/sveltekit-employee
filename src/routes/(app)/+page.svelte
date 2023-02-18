@@ -1,3 +1,7 @@
+<script lang="ts">
+ 
+</script>
+
 <div class="w-full h-full flex items-stretch">
   <div class="flex-none w-72 bg-[var(--bg)] py-8 px-6">
     <p class="uppercase text-primary font-semibold">View</p>
@@ -66,24 +70,24 @@
         </div>
       </div>
       
-      <div class="mt-8 border-t pt-4">
-        <div class="table w-full -mx-2">
-          <div class="table-row">
-            <div class="table-cell py-4 px-2 text-lg text-second font-medium w-60 align-middle">Employees</div>
-            {#each new Array(7) as _}
-              <div class="table-cell py-4 px-2">
+      <div class="w-full overflow-x-auto">
+        <div class="mt-8 border-t pt-4">
+          <div class="schedule">
+            <div class="bg-white p-2 pl-0 hide-divide-bottom">
+              <div class="text-lg text-second font-medium align-middle">Employees</div>
+            </div>
+            {#each new Array(7) as _, i}
+              <div class="p-2 {i == 6 ? 'pr-0' : ''} bg-white hide-divide-left hide-divide-bottom">
                 <div class="text-center uppercase font-medium text-sm">
                   <p>11</p>
                   <p>Sun</p>
                 </div>
               </div>
             {/each}
-          </div>
 
-          <div class="table-row">
-            <div class="table-cell py-4 px-2">
-              <div class="px-4 py-2 font-medium text-sm rounded bg-[var(--bg)]">
-                <div class="h-20 flex space-x-2 justify-between items-center">
+            <div class="p-2 pl-0 bg-white">
+              <div class="px-4 py-3 font-medium text-sm rounded bg-[var(--bg)]">
+                <div class="flex space-x-2 justify-between items-center">
                   <div>
                     <p class="text-second">Assignet Total</p>
                     <p class="pt-1">oh of 56h</p>
@@ -94,12 +98,61 @@
                 </div>
               </div>
             </div>
-            {#each new Array(7) as _}
-              <div class="table-cell py-4 px-2">
-                <div class="text-center px-4 py-2 font-medium text-sm text-second rounded bg-[var(--bg)]">
-                  <div class="h-20 flex items-center">00h of 08h</div>
+            {#each new Array(7) as _, i}
+              <div class="p-2 {i == 6 ? 'pr-0' : ''} bg-white hide-divide-left">
+                <div class="h-full text-center px-4 py-2 font-medium text-sm text-second rounded bg-[var(--bg)]">
+                  <div class="h-full flex items-center justify-center">00h of 08h</div>
                 </div>
               </div>
+            {/each}
+
+            {#each new Array(3) as _}
+              <div class="p-2 pl-0 bg-white">
+                <div class="h-full px-4 py-4 font-medium text-sm rounded bg-[var(--bg)]">
+                  <div class="h-full flex space-x-2 justify-between">
+                    <div class="flex-none w-10 h-10 rounded-full overflow-hidden bg-primary">
+                      <img src="" alt="">
+                    </div>
+                    <div>
+                      <p class="text-second text-base">Assignet Total</p>
+                      <p class="pt-1">20h, Barmen</p>
+                      <p class="pt-1 font-normal">oh of 12h (00h)</p>
+                    </div>
+                    <span class="icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {#each new Array(7) as _, i}
+                <div class="p-2 {i == 6 ? 'pr-0' : ''} bg-white">
+                  <div class="h-full min-h-[150px] flex flex-col space-y-2">
+                    <div class="barmen-card">
+                      <div class="card-text-1">09 - 13 <span>30m</span></div>
+                      <div class="card-text-2">Barmen Place</div>
+
+                      <button class="card-adjust">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path><path d="M19 12a7 7 0 0 0-7-7v14a7 7 0 0 0 7-7z"></path></svg>
+                      </button>
+                    </div>
+
+                    <div class="barmen-card orange">
+                      <div class="card-text-1">09 - 13 <span>30m</span></div>
+                      <div class="card-text-2">Barmen Place</div>
+
+                      <button class="card-adjust">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path><path d="M19 12a7 7 0 0 0-7-7v14a7 7 0 0 0 7-7z"></path></svg>
+                      </button>
+                    </div>
+
+                    <button class="flex-grow min-h-0 w-full grid place-items-center border-2 border-transparent rounded-lg border-dotted hover3border-[var(--primary)] hover:text-primary">
+                      <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              {/each}
             {/each}
           </div>
         </div>
@@ -125,3 +178,55 @@
     </div>
   </div>
 </div>
+
+<style lang="postcss">
+  .schedule {
+    @apply grid grid-cols-[14rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[1px] bg-gray-100 border-b border-gray-100;
+  }
+
+  .schedule .hide-divide-left {
+    @apply relative before:content-[''] before:absolute before:w-[1px] before:h-full before:left-[-1px] before:top-0 before:bg-white;
+  }
+
+  .schedule .hide-divide-bottom {
+    @apply relative after:content-[''] after:absolute after:w-full after:h-[1px] after:left-0 after:bottom-[-1px] after:bg-white;
+  }
+
+  .schedule .barmen-card {
+    @apply rounded-lg overflow-hidden relative;
+  }
+
+  /* green */
+
+  .schedule .barmen-card .card-text-1 {
+    @apply px-4 py-3 bg-[var(--green)] text-white;
+  }
+  .schedule .barmen-card .card-text-1 > span {
+    @apply text-[var(--green-2)];
+  }
+
+  .schedule .barmen-card .card-text-2 {
+    @apply px-4 py-3 bg-[var(--green-2)] text-white;
+  }
+
+  .schedule .barmen-card .card-adjust {
+    @apply icon text-white absolute top-1 right-1 p-1 rounded-full hover:bg-[var(--green-2)];
+  }
+
+  /* orange */
+
+  .schedule .barmen-card.orange .card-text-1 {
+    @apply px-4 py-3 bg-[var(--orange)] text-white;
+  }
+  .schedule .barmen-card.orange .card-text-1 > span {
+    @apply text-[var(--orange-2)];
+  }
+
+  .schedule .barmen-card.orange .card-text-2 {
+    @apply px-4 py-3 bg-[var(--orange-2)] text-white;
+  }
+
+  .schedule .barmen-card.orange .card-adjust {
+    @apply icon text-white absolute top-1 right-1 p-1 rounded-full hover:bg-[var(--orange-2)];
+  }
+</style>

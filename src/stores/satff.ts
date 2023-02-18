@@ -2,7 +2,7 @@ import { get, writable } from "svelte/store";
 import type firebase from "firebase/app";
 import type { User } from "firebase/auth";
 import { authStore } from "./auth_store";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { db } from "$lib/client/fb";
 
 export type StaffType =  {
@@ -14,7 +14,7 @@ export type StaffType =  {
   phone: string,
   position: string,
   role: string,
-  teamId: string,
+  team: string,
   location: string
 }
 
@@ -44,4 +44,45 @@ export const fetchStaffInfo = async (businessId: string) : Promise<StaffType[]> 
   staffStore.update(n => ({staffs: data, load: true}))
 
   return data
+}
+
+export const createStaff = async (businessId: string, info: any, staffId: string = "") => {
+  if (!staffId) {
+    // create
+    const q = collection(db, `business/${businessId}/staffs`);
+  
+    await addDoc(q, info)
+      .then(docRef => {
+        const data: StaffType = {
+          ...info,
+          id: docRef.id
+        }
+        staffStore.update(n => ({staffs: [...n.staffs, data], load: true}))
+      })
+      .catch(error => {
+        throw error
+      })
+  }
+  else {
+    // update
+    const q = doc(db, `business/${businessId}/staffs/${staffId}`);
+  
+    await updateDoc(q, info)
+      .then(docRef => {
+        staffStore.update(n => ({staffs: n.staffs.map(v => {
+          if (v.id == staffId) {
+            return {
+              ...v,
+              ...info
+            }
+          }
+          else {
+            return v;
+          }
+        }), load: true}))
+      })
+      .catch(error => {
+        throw error
+      })
+  }
 }

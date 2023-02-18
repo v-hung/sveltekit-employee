@@ -40,6 +40,8 @@
     }
   });
 
+  console.log(1)
+
   // onMount(() => {
   //   auth.onAuthStateChanged(async (user) => {
   //     console.log('auth state changed', user?.uid)

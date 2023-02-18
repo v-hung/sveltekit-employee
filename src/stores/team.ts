@@ -9,7 +9,8 @@ import type { StaffType } from "./satff";
 type TeamType =  {
   id: string,
   title: string,
-  description: string
+  description: string,
+  location: string
 }
 
 type TeamTypeStore = {

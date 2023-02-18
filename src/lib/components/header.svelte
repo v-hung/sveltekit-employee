@@ -4,7 +4,7 @@
   import { authStore } from "../../stores/auth_store";
   import { businessStore } from "../../stores/business";
 </script>
-<div class="sticky top-0 left-0 shadow">
+<div class="sticky top-0 left-0 shadow bg-white">
   <div class="flex space-x-8 px-8 py-2">
     <a href="/">
       <Logo class="flex-none text-primary w-12 h-12" />
