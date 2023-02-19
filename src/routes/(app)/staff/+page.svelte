@@ -1,9 +1,13 @@
 <script lang="ts">
+  import { page } from "$app/stores";
   import FilterSelect from "$lib/components/filter_select.svelte";
   import Select from "$lib/components/form/select.svelte";
   import Text from "$lib/components/form/text.svelte";
   import AddEmployee from "$lib/components/modal/add_employee.svelte";
-  import { staffStore } from "../../../stores/satff";
+  import { clickOutside } from "$lib/utils/clickOutSide";
+  import { fade, slide } from "svelte/transition";
+  import { businessStore } from "../../../stores/business";
+  import { deleteStaff, staffStore } from "../../../stores/satff";
   import type { PageData } from "./$types";
 
   export let data: PageData
@@ -41,6 +45,22 @@
 
   let openAddEmployee = false
   let updateStaffId = ""
+
+  let delEmployeeId: any = null
+  let deleteing = false
+  const deleteEmployee = async () => {
+    try {
+      if (deleteing) return
+      deleteing = true
+      await deleteStaff($businessStore!.id, delEmployeeId)
+      delEmployeeId = null
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      deleteing = false
+    }
+  }
 </script>
 
 <div class="w-full h-full flex flex-col">
@@ -126,9 +146,11 @@
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.413.585L4 13.585V18h4.413L19.045 7.401zm-3-3 1.587 1.585-1.59 1.584-1.586-1.585 1.589-1.584zM6 16v-1.585l7.04-7.018 1.586 1.586L7.587 16H6zm-2 4h16v2H4z"></path></svg>
                 </button>
-                <span class="icon text-[var(--orange-2)] hover:text-[var(--orange)] cursor-pointer">
+                <button class="icon text-[var(--orange-2)] hover:text-[var(--orange)] cursor-pointer"
+                  on:click|preventDefault={() => delEmployeeId = v.id}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z"></path></svg>
-                </span>
+                </button>
               </div>
             </td>
           </tr>
@@ -159,6 +181,43 @@
 
 {#if openAddEmployee}
   <AddEmployee bind:open={openAddEmployee} roles={roles} bind:staffId={updateStaffId} />
+{/if}
+
+{#if delEmployeeId}
+  {@const employee = $staffStore.staffs.find(v => v.id == delEmployeeId)}
+  <div transition:fade class="fixed top-0 left-0 right-0 bottom-0 bg-black/30 flex flex-col overflow-auto">
+    <!-- <div class="flex-grow"></div> -->
+    <div 
+      transition:slide 
+      use:clickOutside
+      on:clickOutside={() => delEmployeeId = null}
+      class="flex-none my-16 w-full max-w-md mx-auto rounded overflow-hidden relative bg-white"
+    >
+      <div class="px-6 py-4 text-white bg-[var(--orange)] font-medium">
+        <span class="text-lg">Delete</span>
+        <button class="icon float-right" on:click|preventDefault={() => delEmployeeId = null}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+        </button>
+      </div>
+
+      <div class="px-6 py-4 bg-white">
+        Are you sure you want to delete the "{employee ? `${employee?.firstName} ${employee?.lastName}` : 'item'}"?
+      </div>
+
+      <div class="px-6 py-4 bg-white flex space-x-4 justify-end border-t">
+        <button class="btn-outline border-[var(--orange)] text-[var(--orange)]" on:click|preventDefault={() => delEmployeeId = null}>Cancel</button>
+        <button 
+          class="px-4 py-2 rounded-full bg-[var(--orange)] text-white flex space-x-2 items-center"
+          on:click|preventDefault={deleteEmployee}
+        >
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z"></path></svg>
+          </span>
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
 {/if}
 
 <style lang="postcss">

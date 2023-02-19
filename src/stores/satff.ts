@@ -2,7 +2,7 @@ import { get, writable } from "svelte/store";
 import type firebase from "firebase/app";
 import type { User } from "firebase/auth";
 import { authStore } from "./auth_store";
-import { addDoc, collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { db } from "$lib/client/fb";
 
 export type StaffType =  {
@@ -85,4 +85,16 @@ export const createStaff = async (businessId: string, info: any, staffId: string
         throw error
       })
   }
+}
+
+export const deleteStaff = async (businessId: string, staffId: string ) => {
+  const q = doc(db, `business/${businessId}/staffs/${staffId}`);
+  
+  await deleteDoc(q)
+    .then(docRef => {
+      staffStore.update(n => ({staffs: n.staffs.filter(v => v.id != staffId), load: true}))
+    })
+    .catch(error => {
+      throw error
+    })
 }

@@ -131,7 +131,7 @@
                       <div class="card-text-1">09 - 13 <span>30m</span></div>
                       <div class="card-text-2">Barmen Place</div>
 
-                      <button class="card-adjust">
+                      <button class="card-adjust icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path><path d="M19 12a7 7 0 0 0-7-7v14a7 7 0 0 0 7-7z"></path></svg>
                       </button>
                     </div>
@@ -140,7 +140,7 @@
                       <div class="card-text-1">09 - 13 <span>30m</span></div>
                       <div class="card-text-2">Barmen Place</div>
 
-                      <button class="card-adjust">
+                      <button class="card-adjust icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path><path d="M19 12a7 7 0 0 0-7-7v14a7 7 0 0 0 7-7z"></path></svg>
                       </button>
                     </div>
@@ -210,23 +210,23 @@
   }
 
   .schedule .barmen-card .card-adjust {
-    @apply icon text-white absolute top-1 right-1 p-1 rounded-full hover:bg-[var(--green-2)];
+    @apply text-white absolute top-1 right-1 p-1 rounded-full hover:bg-[var(--green-2)];
   }
 
   /* orange */
 
   .schedule .barmen-card.orange .card-text-1 {
-    @apply px-4 py-3 bg-[var(--orange)] text-white;
+    @apply bg-[var(--orange)];
   }
   .schedule .barmen-card.orange .card-text-1 > span {
     @apply text-[var(--orange-2)];
   }
 
   .schedule .barmen-card.orange .card-text-2 {
-    @apply px-4 py-3 bg-[var(--orange-2)] text-white;
+    @apply bg-[var(--orange-2)];
   }
 
   .schedule .barmen-card.orange .card-adjust {
-    @apply icon text-white absolute top-1 right-1 p-1 rounded-full hover:bg-[var(--orange-2)];
+    @apply hover:bg-[var(--orange-2)];
   }
 </style>
